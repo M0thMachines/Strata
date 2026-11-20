@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Strata WoA" Version="1.0.0" Manufacturer="m0thmachines"
+           UpgradeCode="7d3f2a64-1c0e-4b52-9b1f-5e5f2c8a9d01" Language="1033"
+           Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Strata WoA is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLDIR" Name="StrataWoA">
+        <Directory Id="BINDIR" Name="bin" />
+        <Directory Id="NODEDIR" Name="node" />
+        <Directory Id="HOSTDIR" Name="host" />
+        <Directory Id="CONTROLDIR" Name="control" />
+        <Directory Id="SCRIPTSDIR" Name="scripts" />
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="Strata WoA native runtime" Level="1" Display="expand">
+      <Files Include="$(var.PayloadDir)\strata-desktop.exe" Directory="INSTALLDIR" />
+      <ComponentRef Id="ShortcutComponent" />
+      <Feature Id="Bin" Title="Native ARM64 engine, vision, gateway" Level="1">
+        <Files Include="$(var.PayloadDir)\bin\**" Directory="BINDIR" />
+      </Feature>
+      <Feature Id="Node" Title="Native ARM64 Node runtime" Level="1">
+        <Files Include="$(var.PayloadDir)\node\**" Directory="NODEDIR" />
+      </Feature>
+      <Feature Id="Host" Title="Strata App Host + web UI" Level="1">
+        <Files Include="$(var.PayloadDir)\host\**" Directory="HOSTDIR" />
+      </Feature>
+      <Feature Id="Control" Title="Strata Control (bundled Python)" Level="1">
+        <Files Include="$(var.PayloadDir)\control\**" Directory="CONTROLDIR" />
+      </Feature>
+      <Feature Id="Scripts" Title="Launcher and service scripts" Level="1">
+        <Files Include="$(var.PayloadDir)\scripts\**" Directory="SCRIPTSDIR" />
+      </Feature>
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <Component Id="ShortcutComponent" Directory="INSTALLDIR" Bitness="always64">
+      <RegistryValue Root="HKLM" Key="Software\m0thmachines\StrataWoA" Name="Shortcuts" Type="integer" Value="1" KeyPath="yes" />
+      <Shortcut Id="GuiLnk" Directory="ProgramMenuFolder" Name="Strata (GUI).lnk"
+                Target="[INSTALLDIR]strata-desktop.exe" WorkingDirectory="INSTALLDIR" />
+      <Shortcut Id="StartGwLnk" Directory="ProgramMenuFolder" Name="Strata Gateway (start).lnk"
+                Target="[SCRIPTSDIR]gateway-start.cmd" WorkingDirectory="SCRIPTSDIR" />
+      <Shortcut Id="StopGwLnk" Directory="ProgramMenuFolder" Name="Strata Gateway (stop).lnk"
+                Target="[SCRIPTSDIR]gateway-stop.cmd" WorkingDirectory="SCRIPTSDIR" />
+      <Shortcut Id="ConfigureLnk" Directory="ProgramMenuFolder" Name="Strata configure instance.cmd"
+                Target="[SCRIPTSDIR]configure.cmd" WorkingDirectory="SCRIPTSDIR" />
+    </Component>
+  </Fragment>
+</Wix>

@@ -1,0 +1,19 @@
+<Project Sdk="WixToolset.Sdk/6.0.2">
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputType>Bundle</OutputType>
+    <ArchivesDirectory>$(MSBuildThisFileDirectory)obj\arch</ArchivesDirectory>
+    <WixSearchAllPackages>true</WixSearchAllPackages>
+    <DefineConstants>PkgOut=$(MSBuildThisFileDirectory)..\out</DefineConstants>
+    <SignsUsingShim>false</SignsUsingShim>
+    <CulturesToBuild>en-us</CulturesToBuild>
+    <CompressionLevel>high</CompressionLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Bundle.wxs" />
+    <WixExtension Include="WixToolset.BootstrapperApplications.wixext" Version="6.0.2" HintPath="$(MSBuildThisFileDirectory).wix\extensions\WixToolset.BootstrapperApplications.wixext\6.0.2\wixext6\WixToolset.BootstrapperApplications.wixext.dll" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Platform>arm64</Platform>
+  </PropertyGroup>
+</Project>

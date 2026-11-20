@@ -1977,20 +1977,30 @@ static void collect() {
         std::memset(&ctx, 0, sizeof ctx);
         ctx.ContextFlags = CONTEXT_FULL;
         if (GetThreadContext(th, &ctx)) {
-            for (int k = 0; k < kMaxFrames && ctx.Rip != 0; ++k) {
-                s.pc[s.n++] = ctx.Rip;
+            // x64 names the instruction/stack pointers Rip/Rsp; ARM64's CONTEXT calls them Pc/Sp.
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(__aarch64__)
+#define STRATA_CTX_PC(c) ((c).Pc)
+#define STRATA_CTX_SP(c) ((c).Sp)
+#else
+#define STRATA_CTX_PC(c) ((c).Rip)
+#define STRATA_CTX_SP(c) ((c).Rsp)
+#endif
+            for (int k = 0; k < kMaxFrames && STRATA_CTX_PC(ctx) != 0; ++k) {
+                s.pc[s.n++] = STRATA_CTX_PC(ctx);
                 DWORD64 base = 0;
-                RUNTIME_FUNCTION* fe = RtlLookupFunctionEntry(ctx.Rip, &base, nullptr);
+                RUNTIME_FUNCTION* fe = RtlLookupFunctionEntry(STRATA_CTX_PC(ctx), &base, nullptr);
                 if (fe == nullptr) {                       // a leaf: the return address is at the stack pointer
-                    if (ctx.Rsp == 0) break;
-                    ctx.Rip = *(const DWORD64*) ctx.Rsp;
-                    ctx.Rsp += 8;
+                    if (STRATA_CTX_SP(ctx) == 0) break;
+                    STRATA_CTX_PC(ctx) = *(const DWORD64*) STRATA_CTX_SP(ctx);
+                    STRATA_CTX_SP(ctx) += 8;
                 } else {
                     PVOID hd = nullptr;
                     DWORD64 est = 0;
-                    RtlVirtualUnwind(UNW_FLAG_NHANDLER, base, ctx.Rip, fe, &ctx, &hd, &est, nullptr);
+                    RtlVirtualUnwind(UNW_FLAG_NHANDLER, base, STRATA_CTX_PC(ctx), fe, &ctx, &hd, &est, nullptr);
                 }
             }
+#undef STRATA_CTX_PC
+#undef STRATA_CTX_SP
             ++g_nstacks;
         }
         ResumeThread(th);

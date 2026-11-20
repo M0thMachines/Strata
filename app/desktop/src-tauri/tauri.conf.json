@@ -32,11 +32,7 @@
     "resources": {
       "../../host/dist": "host/dist",
       "../../host/server": "host/server",
-      "../../host/package.json": "host/package.json",
-      "resources/node": "node",
-      "resources/control": "control",
-      "resources/harness": "harness",
-      "resources/engine-bundle": "engine-bundle"
+      "../../host/package.json": "host/package.json"
     },
     "linux": {
       "appimage": {

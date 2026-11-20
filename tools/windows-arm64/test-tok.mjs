@@ -1,0 +1,12 @@
+import { encode, decodeIds, renderChat, END } from './gateway.mjs';
+const a = encode('Hello world');
+console.log('Hello world ->', a);
+console.log('roundtrip:', JSON.stringify(decodeIds(a)));
+const b = encode('The capital of France is');
+console.log('capital ids:', b.length, JSON.stringify(decodeIds(b)));
+const chat = renderChat([{ role: 'user', content: 'Hi' }]);
+const cid = encode(chat);
+console.log('chat ids:', cid.length, 'END:', END, 'tail:', cid.slice(-4));
+const zh = encode('你好，世界');
+console.log('zh decode:', JSON.stringify(decodeIds(zh)));
+process.exit(0);
