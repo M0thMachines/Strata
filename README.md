@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **This is a fork of [Niko1221/Strata](https://github.com/Niko1221/Strata).** Strata is Niko1221's project — all the work and credit for Strata goes to them. Please support upstream: [Sponsor Strata](https://github.com/sponsors/Niko1221).
+>
+> What we added in this fork: we ported and built Strata to run **natively as an ARM64 application on NVIDIA N1X devices running Windows 11 on Arm (WoA)** — engine (CUDA `sm_120`), vision, GUI, and an OpenAI-compatible HTTP gateway, all native ARM64, no emulation. We then packaged our favourite AI agent, **[Hermes](https://hermes-agent.nousresearch.com) (Nous Research)**, into the installer — installed automatically and preconfigured to talk to Strata — for a turnkey solution for us and our friends.
+>
+> Native WoA installers are in [Releases](../../releases) (look for `StrataWoA-Turnkey-*-arm64.exe`); build and setup details in [`tools/windows-arm64/README.md`](tools/windows-arm64/README.md).
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="app/host/public/brand/strata-lockup-dark.svg">
