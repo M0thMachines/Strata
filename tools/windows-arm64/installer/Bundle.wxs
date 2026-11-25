@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
-  <Bundle Name="Strata WoA" Version="1.0.0" Manufacturer="m0thmachines"
+  <Bundle Name="Strata WoA Turnkey" Version="1.0.7" Manufacturer="m0thmachines"
           UpgradeCode="2b6f9d45-3a7c-4e18-8f56-9a0e4d71c2b3">
     <BootstrapperApplication>
       <bal:WixStandardBootstrapperApplication Theme="hyperlinkLicense" LicenseUrl="https://opensource.org/licenses/MIT" />
     </BootstrapperApplication>
     <Chain>
-      <MsiPackage SourceFile="$(var.PkgOut)\StrataWoA-1.0.0-arm64.msi" />
+      <MsiPackage SourceFile="$(var.PkgOut)\StrataWoA-1.0.7-arm64.msi" />
     </Chain>
   </Bundle>
 </Wix>

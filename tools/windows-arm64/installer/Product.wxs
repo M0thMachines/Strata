@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Name="Strata WoA" Version="1.0.0" Manufacturer="m0thmachines"
+  <Package Name="Strata WoA" Version="1.0.7" Manufacturer="m0thmachines"
            UpgradeCode="7d3f2a64-1c0e-4b52-9b1f-5e5f2c8a9d01" Language="1033"
            Scope="perMachine">
     <MajorUpgrade DowngradeErrorMessage="A newer version of Strata WoA is already installed." />
+    <!-- Core pack lives in its own chained MSI (CoreData.wxs) to stay under the
+         2GB single-cab Windows Installer stream limit (WIX1158; WiX v6 cannot split cabs). -->
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
@@ -48,6 +50,11 @@
                 Target="[SCRIPTSDIR]gateway-stop.cmd" WorkingDirectory="SCRIPTSDIR" />
       <Shortcut Id="ConfigureLnk" Directory="ProgramMenuFolder" Name="Strata configure instance.cmd"
                 Target="[SCRIPTSDIR]configure.cmd" WorkingDirectory="SCRIPTSDIR" />
+      <Shortcut Id="ModelsLnk" Directory="ProgramMenuFolder" Name="Strata models (fetch).cmd"
+                Target="[SCRIPTSDIR]models-fetch.cmd" WorkingDirectory="SCRIPTSDIR" />
+      <!-- auto-start the gateway at every logon (gateway-start.cmd self-guards double launch) -->
+      <Shortcut Id="StartupLnk" Directory="StartupFolder" Name="Strata Gateway (start).lnk"
+                Target="[SCRIPTSDIR]gateway-start.cmd" WorkingDirectory="SCRIPTSDIR" />
     </Component>
   </Fragment>
 </Wix>

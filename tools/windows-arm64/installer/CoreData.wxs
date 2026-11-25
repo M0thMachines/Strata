@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IQ3_S core pack as its own MSI: keeps every embedded cab stream under the
+     2GB Windows Installer limit (WIX1158). Chained by Bundle.wxs alongside the
+     main product; installed to C:\strata-woa (overridable via WODATADIR). -->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Strata WoA Core Data" Version="1.0.7" Manufacturer="m0thmachines"
+           UpgradeCode="7c20c80c-4873-428c-93fd-088da388ec6e" Language="1033"
+           Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Strata WoA Core Data is already installed." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+    <Property Id="WODATADIR" Value="C:\strata-woa" />
+    <Directory Id="WODATADIR" Name="strata-woa" />
+
+    <Feature Id="Core" Title="IQ3_S core pack (tokenizer, dense, mtp, profile)" Level="1">
+      <Files Include="$(var.PayloadDir)\data\**" Directory="WODATADIR" />
+    </Feature>
+  </Package>
+</Wix>

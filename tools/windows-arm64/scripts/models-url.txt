@@ -1,0 +1,6 @@
+# Strata WoA model pack download list (used by "Strata models (fetch).cmd").
+# Format: <url>   <filename>   (one per line; lines starting with # are ignored)
+#
+# IQ3_S GGUF pair (83.6 GB) - canonical Hugging Face host (byte- and SHA-256-verified):
+https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/resolve/main/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf
+https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF/resolve/main/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf
