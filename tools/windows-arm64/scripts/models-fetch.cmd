@@ -51,9 +51,24 @@ call :checkf "%P1%" 1500000000
 call :checkf "%P2%" 873101431
 if "%OK%"=="0" exit /b 0
 echo Merging core pack parts at %time% ...
-copy /b "%P1"+"%P2%" "%ZIP%" >nul
-if errorlevel 1 (echo merge failed. & set "OK=0" & exit /b 0)
+del /q "%ZIP%" 2>nul
+set "MR=0"
+:merge_try
+copy /b "%P1"+"%P2%" "%ZIP%" 1>nul
+if exist "%ZIP%" call :checkf "%ZIP%" 2373101431
+if "%OK%"=="1" if exist "%ZIP%" goto :merged
+set "OK=1"
+set /a MR+=1
+if %MR% lss 3 (
+  echo merge attempt %MR% incomplete at %time% - retrying in 10s...
+  del /q "%ZIP%" 2>nul
+  ping -n 11 127.0.0.1 >nul
+  goto merge_try
+)
+echo copy failed - falling back to PowerShell stream merge at %time% ...
+powershell -NoProfile -NonInteractive -Command "$o=[IO.File]::Create('%ZIP%'); foreach($f in @('%P1%','%P2%')){$i=[IO.File]::OpenRead($f); $i.CopyTo($o); $i.Close()}; $o.Close()"
 call :checkf "%ZIP%" 2373101431
+:merged
 if "%OK%"=="0" (del /q "%ZIP%" 2>nul & exit /b 0)
 call :shaf "%ZIP%" 92d9b554601ecefd56473917aa56c0b88d5d68a8d052a1306ceab82b5c6d5fb2
 if "%OK%"=="0" exit /b 0
